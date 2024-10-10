@@ -54,7 +54,11 @@ PYTHON_ABI = f"cp{PYTHON_ABI_MAJ_MIN}-cp{PYTHON_ABI_MAJ_MIN}{PYTHON_ABI_FLAGS}"
 PYTHON_IMAGE_TAG = ".".join(PYTHON_MAJ_MIN) + (
     "-rc" if PYTHON_MAJ_MIN == ["3", "13"] else ""
 )
-MANYLINUX_PYTHON_IMAGE_ID = f"python:{PYTHON_IMAGE_TAG}-slim-bullseye"
+# Detect if the platform is s390x and change the Python image accordingly
+if PLATFORM == "s390x":
+    MANYLINUX_PYTHON_IMAGE_ID = f"s390x/python:{PYTHON_IMAGE_TAG}-slim-bullseye"
+else:
+    MANYLINUX_PYTHON_IMAGE_ID = f"python:{PYTHON_IMAGE_TAG}-slim-bullseye"
 MUSLLINUX_IMAGES = {
     "musllinux_1_1": f"quay.io/pypa/musllinux_1_1_{PLATFORM}:latest",
 }
